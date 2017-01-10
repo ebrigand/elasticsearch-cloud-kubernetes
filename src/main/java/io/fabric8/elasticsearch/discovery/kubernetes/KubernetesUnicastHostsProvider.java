@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 Red Hat, Inc.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,6 @@ import org.elasticsearch.Version;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.network.NetworkAddress;
 import org.elasticsearch.common.network.NetworkService;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
@@ -98,7 +97,7 @@ public class KubernetesUnicastHostsProvider extends AbstractComponent implements
     cachedDiscoNodes = new ArrayList<>();
     String tmpIPAddress = null;
     try {
-      InetAddress inetAddress = networkService.resolvePublishHostAddresses(null);
+      InetAddress inetAddress = networkService.resolvePublishHostAddress(null);
       if (inetAddress != null) {
         tmpIPAddress = NetworkAddress.format(inetAddress);
       }
@@ -129,7 +128,7 @@ public class KubernetesUnicastHostsProvider extends AbstractComponent implements
 
                 endpointSubset.getPorts().stream().forEach((port) -> {
                   try {
-                    TransportAddress[] addresses = transportService.addressesFromString(formattedEndpointAddress + ":" + port.getPort(), 1);
+                    TransportAddress[] addresses = transportService.addressesFromString(formattedEndpointAddress + ":" + port.getPort());
 
                     for (TransportAddress transportAddress : addresses) {
                       logger.info("adding endpoint {}, transport_address {}", endpointAddress, transportAddress);

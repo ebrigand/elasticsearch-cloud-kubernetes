@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 Red Hat, Inc.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,14 +25,13 @@ import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.discovery.DiscoveryModule;
-import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.plugins.AbstractPlugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class KubernetesDiscoveryPlugin extends Plugin {
+public class KubernetesDiscoveryPlugin extends AbstractPlugin {
 
   protected final ESLogger logger = Loggers.getLogger(KubernetesDiscoveryPlugin.class);
   private final Settings settings;
@@ -86,16 +85,16 @@ public class KubernetesDiscoveryPlugin extends Plugin {
   }
 
   @Override
-  public Collection<Module> nodeModules() {
-    List<Module> modules = new ArrayList<>();
+  public Collection<Class<? extends Module>> modules() {
+    List<Class<? extends Module>> modules = new ArrayList<>();
     if (isDiscoveryAlive(settings, logger)) {
-      modules.add(new KubernetesModule());
+      modules.add(KubernetesModule.class);
     }
     return modules;
   }
 
   @Override
-  public Collection<Class<? extends LifecycleComponent>> nodeServices() {
+  public Collection<Class<? extends LifecycleComponent>> services() {
     Collection<Class<? extends LifecycleComponent>> services = new ArrayList<>();
     if (isDiscoveryAlive(settings, logger)) {
       services.add(KubernetesModule.getComputeServiceImpl());

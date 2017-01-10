@@ -17,6 +17,7 @@ package io.fabric8.elasticsearch.discovery.kubernetes;
 
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterService;
+import org.elasticsearch.cluster.settings.DynamicSettings;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.DiscoverySettings;
@@ -36,6 +37,6 @@ public class KubernetesDiscovery extends ZenDiscovery {
                              ClusterService clusterService, NodeSettingsService nodeSettingsService, ZenPingService pingService,
                              DiscoverySettings discoverySettings,
                              ElectMasterService electMasterService) {
-    super(settings, clusterName, threadPool, transportService, clusterService, nodeSettingsService, pingService, electMasterService, discoverySettings);
+    super(settings, clusterName, threadPool, transportService, clusterService, nodeSettingsService, null, pingService, electMasterService, discoverySettings, new DynamicSettings());
   }
 }
